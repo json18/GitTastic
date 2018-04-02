@@ -34,13 +34,28 @@ function addEmotion(){
 
 $(btns).on("click", function(){
     console.log("BUTTON WAS CLICKED!!!");
-    clickedBtn = $(this).;
     console.log("clickedBtn: ", clickedBtn);
-
+    var emotionValue = $(this).attr(" ") //unsure what to put here
+    var queryURL =  "https://api.giphy.com/v1/gifs/search?q=" + emotionValue +"XgGDNaFiZqTKi1YvKoMcDk5gkc2LGGzd"
+    
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }) 
+    .then(function(response) {
+        console.log(queryURL);
+        console.log(response);
+        var results = response.data;
+        for (var i = 0; i < results.length; i++) {
+            var emotionDiv = $("<div>");
+            var p = $("<p>").text("Rating: " + results[i].rating);
+            var emotionImage = $("<img>");
+            emotionImage.attr("src", results[i].images.fixed_height.url);
+            emotionDiv.append(p);
+            emotionDiv.append(emotionImage);
+            $("gifs").prepend(emotionDiv);
+        }
+    });
 });
 
-
-
-
-
-
+ 
