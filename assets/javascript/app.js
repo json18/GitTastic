@@ -32,18 +32,19 @@ function addEmotion(){
 }
 
 
-$(btns).on("click", function(){
+$(btns).on("click", ".emotionBtn", function(){
     console.log("BUTTON WAS CLICKED!!!");
     console.log("clickedBtn: ", clickedBtn);
-    var emotionValue = $(this).attr(" ") //unsure what to put here
-    var queryURL =  "https://api.giphy.com/v1/gifs/search?q=" + emotionValue +"XgGDNaFiZqTKi1YvKoMcDk5gkc2LGGzd"
+    console.log($(this));
+    var emotionValue = $(this).attr("data-emotion");
+    console.log(emotionValue);
+    var queryURL =  "https://api.giphy.com/v1/gifs/search?q=" + emotionValue + "&apikey=XgGDNaFiZqTKi1YvKoMcDk5gkc2LGGzd";
     
     $.ajax({
         url: queryURL,
         method: "GET"
     }) 
     .then(function(response) {
-        console.log(queryURL);
         console.log(response);
         var results = response.data;
         for (var i = 0; i < results.length; i++) {
@@ -53,7 +54,7 @@ $(btns).on("click", function(){
             emotionImage.attr("src", results[i].images.fixed_height.url);
             emotionDiv.append(p);
             emotionDiv.append(emotionImage);
-            $("gifs").prepend(emotionDiv);
+            $("#gifs").prepend(emotionDiv);
         }
     });
 });
