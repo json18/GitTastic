@@ -1,7 +1,7 @@
 var emotion = ["excited", "hungry", "awkward", "bored", "confused"];
 var main = $("body");
 var btns = main.find("#buttons");
-var emotionBtn; var newEmotion; var clickedBtn; var emotionStill; var emotionAnimate;
+var emotionBtn; var newEmotion; var clickedBtn; var emotionStill; var emotionAnimate; var emotionDiv;
 
 renderButtons();
 addEmotion();
@@ -45,38 +45,75 @@ $(btns).on("click", ".emotionBtn", function(){
         for (var i = 0; i < results.length; i++) {
             var emotionDiv = $("<div>");
             var p = $("<p>").text("Rating: " + results[i].rating);
+            emotionDiv.append(p);
+            emotionDiv.append(emotionAnimate);
+            $("#gifs").prepend(emotionDiv);
            
             emotionStill = $("<img>");
-            emotionStill.attr("src", results[i].images.fixed_height_still.url);
+            emotionStill.attr("src", results[i].images.fixed_height.url);
+            emotionStill.attr("data-still", results[i].images.fixed_height_still.url);
             emotionStill.attr("data-state", "still");
+            emotionStill.attr("class", "giphy");
             console.log("emotionStill = ", emotionStill)
 
             emotionAnimate = $("<img>");
             emotionAnimate.attr("src", results[i].images.fixed_height.url)
             emotionAnimate.attr("data-state", "animate");
-            emotionDiv.append(p);
-
-            var state = $(this).attr("data-state");
-            console.log("state = ", state);
-            if (state === "still") {
-                $(this).attr("src", $(this).attr("data-animate"));
-                $(this).attr("data-state", "animate");
-                emotionDiv.append(emotionAnimate);
-                $("#gifs").prepend(emotionDiv);
-              } else {
-                $(this).attr("src", $(this).attr("data-still"));
-                $(this).attr("data-state", "still");
-                emotionDiv.append(emotionStill);
-                $("#gifs").prepend(emotionDiv);
-
+            emotionStill.attr("class", "giphy");
             console.log("emotionAnimate = ", emotionAnimate);          
-        }
-    };
+
+            $("#gifs").on("click", function() {
+                console.log("This is getting clicked!!!!");
+                var state = $(this).attr("data-state");
+                console.log("state = ", state);
+                if ("data-state" === "animate") {
+                    console.log("This is ANIMATED");
+                    $(this).attr("src", emotionStill);
+                    $(this).attr("data-state", "still");             
+                } else {
+                    console.log("THIS IS A STILL IMAGE");
+                    $(this).attr("src", emotionAnimate);
+                    $(this).attr("data-state", "animate");
+                
+                    }
+                });
+    
+         };
+
+
+  
+
+    
+        });
 });
 
-});
+
+
+
 
 /*
+
+
+$("#gifs").on("click", function(){
+var state = $(this).attr("data-state");
+console.log("state = ", state);
+if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+    emotionDiv.append(emotionAnimate);
+    $("#gifs").prepend(emotionDiv);
+  } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+    emotionDiv.append(emotionStill);
+    $("#gifs").prepend(emotionDiv);
+
+console.log("emotionAnimate = ", emotionAnimate);     
+
+};
+});
+
+
 $(btns).on("click", ".emotionBtn", function() {
     var state = $(this).attr("data-state");
     console.log("state = ", state);
