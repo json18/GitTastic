@@ -40,51 +40,40 @@ $(btns).on("click", ".emotionBtn", function(){
         method: "GET"
     }) 
     .then(function(response) {
-        console.log(response);
         var results = response.data;
         for (var i = 0; i < results.length; i++) {
+
             var emotionDiv = $("<div>");
             var p = $("<p>").text("Rating: " + results[i].rating);
             emotionDiv.append(p);
-            emotionDiv.append(emotionAnimate);
+            emotionDiv.append(emotionStill);
             $("#gifs").prepend(emotionDiv);
            
+            //inserting the image tag.
             emotionStill = $("<img>");
             emotionStill.attr("src", results[i].images.fixed_height.url);
             emotionStill.attr("data-still", results[i].images.fixed_height_still.url);
-            emotionStill.attr("data-state", "still");
-            emotionStill.attr("class", "giphy");
-            console.log("emotionStill = ", emotionStill)
+            emotionStill.attr("data-animate", results[i].images.fixed_height.url);
+            
+            //setting the default data-state to animate.
+            emotionStill.attr("data-state","animate");
 
-            emotionAnimate = $("<img>");
-            emotionAnimate.attr("src", results[i].images.fixed_height.url)
-            emotionAnimate.attr("data-state", "animate");
-            emotionStill.attr("class", "giphy");
-            console.log("emotionAnimate = ", emotionAnimate);          
-
-            $("#gifs").on("click", function() {
+            //toggling between a moving and still
+            emotionStill.on("click", function() {
                 console.log("This is getting clicked!!!!");
                 var state = $(this).attr("data-state");
-                console.log("state = ", state);
-                if ("data-state" === "animate") {
-                    console.log("This is ANIMATED");
-                    $(this).attr("src", emotionStill);
-                    $(this).attr("data-state", "still");             
+                if (state === "animate") {
+                    $(this).attr("src", $(this).attr("data-still"));
+                    $(this).attr("data-state", "still");          
+                    console.log("I just made this gif still");
                 } else {
-                    console.log("THIS IS A STILL IMAGE");
-                    $(this).attr("src", emotionAnimate);
-                    $(this).attr("data-state", "animate");
-                
+                    $(this).attr("src", $(this).attr("data-animate"));
+                    $(this).attr("data-state", "animate");              
+                    console.log("i just made this gif an image");
                     }
                 });
-    
          };
-
-
-  
-
-    
-        });
+    });
 });
 
 
