@@ -69,7 +69,7 @@ $(btns).on("click", ".emotionBtn", function(){
                 } else {
                     $(this).attr("src", $(this).attr("data-animate"));
                     $(this).attr("data-state", "animate");              
-                    console.log("i just made this gif an image");
+                    console.log("i just made this gif move");
                     }
                 });
          };
